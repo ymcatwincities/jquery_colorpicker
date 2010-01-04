@@ -1,0 +1,256 @@
+<?php
+// $Id$
+
+function jquery_colorpicker_perm()
+{
+	return array
+	(
+		'administer jquery colorpicker'
+	);
+}
+
+function jquery_colorpicker_init()
+{
+	global $user;
+	if(variable_get('jquery_colorpicker_ie6_support', 0) && user_access('administer jquery colorpicker', $user))
+	{
+		$path = drupal_get_path('module', 'jquery_colorpicker') . '/twin_helix/';
+		if(!is_file($path . 'blank.gif'))
+		{
+			drupal_set_message
+			(
+				t
+				(
+					'You have enabled IE6 support for Jquery Colorpicker, but are missing the required file !blank.gif. This file can be downloaded from !twin_helix and should saved in !path', 
+					array
+					(
+						'!twin_helix' => l
+						(
+							'Twin Helix',
+							'http://www.twinhelix.com/css/iepngfix/',
+							array
+							(
+								'html' => TRUE,
+							)
+						),
+						'!path' => '<strong>' . $path . '</strong>',
+						'!blank.gif' => '<strong>blank.gif</strong>',
+					)
+				),
+				'error'
+			);
+		}
+		if(!is_file($path . 'iepngfix.htc'))
+		{
+			drupal_set_message
+			(
+				t
+				(
+					'You have enabled IE6 support for Jquery Colorpicker, but are missing the required file !iepngfix.htc. This file can be downloaded from !twin_helix and should saved in !path',
+					array
+					(
+						'!twin_helix' => l
+						(
+							'Twin Helix',
+							'http://www.twinhelix.com/css/iepngfix/',
+							array
+							(
+								'html' => TRUE,
+							)
+						),
+						'!path' => '<strong>' . $path . '</strong>',
+						'!iepngfix.htc' => '<strong>iepngfix.htc</strong>',
+					)
+				),
+				'error'
+			);
+		}
+		if(!is_file($path . 'iepngfix_tilebg.js'))
+		{
+			drupal_set_message
+			(
+				t
+				(
+					'You have enabled IE6 support for Jquery Colorpicker, but are missing the required file !iepngfix_tilebg.js. This file can be downloaded from !twin_helix and should saved in !path',
+					array
+					(
+						'!twin_helix' => l
+						(
+							'Twin Helix',
+							'http://www.twinhelix.com/css/iepngfix/',
+							array
+							(
+								'html' => TRUE,
+							)
+						),
+						'!path' => '<strong>' . $path . '</strong>',
+						'!iepngfix_tilebg.js' => '<strong>iepngfix_tilebg.js</strong>',
+					)
+				),
+				'error'
+			);
+		}
+	}
+	variable_set('jquery_colorpicker_ie6_page', 0);
+}
+
+function jquery_colorpicker_menu()
+{
+	$menu['admin/settings/jquery_colorpicker'] = array
+	(
+		'title' => 'Jquery colorpicker',
+		'description' => 'Settings page for jquery colorpicker',
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('jquery_colorpicker_settings'),
+		'access arguments' => array('administer jquery colorpicker'),
+	);
+	return $menu;
+}
+
+function jquery_colorpicker_elements()
+{
+	return array
+	(
+		'colorpicker' => array
+		(
+			'#input' => TRUE,
+			'#process' => array('jquery_colorpicker_process'),
+			'#element_validate' => array('jquery_colorpicker_validate'),
+			'#jquery_colorpicker_background' => 'select.png',
+		),
+	);
+}
+
+function jquery_colorpicker_theme()
+{
+	return array
+	(
+		'colorpicker' => array
+		(
+			'arguments' => array
+			(
+				'element' => NULL
+			),
+		),
+	);
+}
+
+function theme_colorpicker($element)
+{
+	$class = array('form-colorpicker');
+	$output = '';
+	$path = drupal_get_path('module', 'jquery_colorpicker') . '/';
+	drupal_add_css($path . 'colorpicker/css/colorpicker.css');
+	drupal_add_js($path . 'colorpicker/js/colorpicker.js');
+	drupal_add_js($path . 'js/jquery_colorpicker.js');
+	if(variable_get('jquery_colorpicker_ie6_support', 0))
+	{
+		variable_set('jquery_colorpicker_ie6_page', 1);
+	}
+	$backgrounds = array('select.png', 'select2.png');
+	$background = (in_array($element['#jquery_colorpicker_background'], $backgrounds)) ? $element['#jquery_colorpicker_background'] : 'select.png';
+	$background_url = url($path . 'colorpicker/images/' . $background, array('absolute' => TRUE));
+	if(isset($element['#value']))
+	{
+		$default_color = '#' . $element['#value'];
+	}
+	elseif(isset($element['#default_value']) && strlen($element['#default_value']) == 6 && preg_match('/^[0-9a-f]{6}$/i', $element['#default_value']))
+	{
+		$default_color = '#' . strtolower($element['#default_value']);
+	}
+	else
+	{
+		$default_color =  "#ffffff";
+
+	}
+	$settings = array('ids' => array($element['#id']), 'backgrounds' => array($background_url), 'backgroundColors' => array($default_color), $element['#id'] . '-defaultColor' => $default_color);
+
+	drupal_add_js(array('jqueryColorpicker' => $settings), 'setting');
+
+	_form_set_class($element, $class);
+	
+	if (isset($element['#field_prefix']))
+	{
+		$output .= '<span class="field-prefix">'. $element['#field_prefix'] .'</span> ';
+	}
+	
+	$output .= '<div id="' . $element['#name'] . '-inner_wrapper" class="inner_wrapper">';
+	$output .= '<div class="color_picker" style="background-color:' . $default_color . '">';
+	$output .= '<span class="hash">#</span>';
+	$output .= '<input type="text"'. ' maxlength="6"' .' name="'. $element['#name'] .'" id="'. $element['#id'] .'"'. ' size="7"' .' value="'. check_plain($element['#value']) .'"'. drupal_attributes($element['#attributes']) .' />';
+	$output .= '<div class="description">' . t('Enter a hexidecimal color value. Enabling javascript will replace this input with a graphical color selector.') . '</div>';
+	$output .= '</div>';
+	$output .= '</div>';
+	
+	if (isset($element['#field_suffix']))
+	{
+		$output .= '<span class="field-suffix">'. $element['#field_suffix'] .'</span>';
+	}
+	
+	return theme('form_element', $element, $output);
+
+}
+
+function jquery_colorpicker_validate($element, &$form_state)
+{
+	if($element['#value'] != '' && strlen($element['#value']) != 6)
+	{
+		form_error($element, t('Color values must be exactly six characters in length'));
+	}
+	elseif($element['#value'] != '' && preg_match('/^#/', $element['#value']))
+	{
+		form_error($element, t('Do not include the hash symbol (#) when entering colors'));
+	}
+	elseif($element['#value'] != '' && !preg_match('/^[0-9a-f]{6}$/i', $element['#value']))
+	{
+		form_error($element, t("You entered an invalid value for the color. Colors must be hexadecimal, and can only contain the characters '0' to '9' and 'a' to 'f'."));
+	}
+}
+
+function jquery_colorpicker_preprocess_page(&$vars)
+{
+	if(variable_get('jquery_colorpicker_ie6_page', 0))
+	{
+		$path = base_path() . drupal_get_path('module', 'jquery_colorpicker') . '/twin_helix/';
+		$path_to_pngfix = $path . 'iepngfix.htc';
+		$path_to_tilebg = $path . 'iepngfix_tilebg.js';
+		$vars['styles'] .= PHP_EOL .
+							'<!--[if lt IE 7]>' .
+							PHP_EOL .
+							'<style type="text/css">' .
+							PHP_EOL .
+							'.inner_wrapper, .color_picker, .colorpicker_color div, .colorpicker_color div div  { behavior: url("' . $path_to_pngfix . '") } ' .
+							PHP_EOL . 
+							'</style>' .
+							PHP_EOL .
+							'<![endif]-->' .
+							PHP_EOL;
+		$vars['scripts'] .= PHP_EOL .
+							'<!--[if lt IE 7]>' .
+							PHP_EOL .
+							'<script type="text/javascript" src="' . $path_to_tilebg . '"></script>' .
+							PHP_EOL .
+							'<![endif]-->' .
+							PHP_EOL;
+	}
+}
+
+function jquery_colorpicker_settings()
+{
+	$form['ie6'] = array
+	(
+		'#type' => 'fieldset',
+		'#title' => t('Internet Explorer 6'),
+	);
+	$form['ie6']['description'] = array
+	(
+		'#value' => '<p>' . t('Internet Explorer 6 does not support transparencies in .png files. They are rendered with a non-transparent blue glow anywhere where there should be transparency. Since jquery colorpicker relies on transparent .png files to work, this means that out of the box, the jquery colorpicker will not work with IE6. You can solve this using the following steps:') . '</p><ol><li>' . t('Inside the jquery colorpicker module folder (generally located at sites/all/modules), create a new folder named "twin_helix". If the jquery colorpicker module is in the standard location, this means you will have the folder sites/all/modules/twin_helix') . '</li><li>' . t('Download the iepngfix.zip from !twin_helix', array('!twin_helix' => l('Twin Helix', 'http://www.twinhelix.com/css/iepngfix/', array('absolute' => TRUE)))) . '</li><li>' . t('Unpack the zip file, and place the following three files into the twin_helix folder you created in step 1:') . '<ul><li>iepngfix.htc</li><li>blank.gif</li><li>iepngfix_tilebg.js</li></ul></li><li>' . t('Check the box below, and save this page') . '</li></ol>',
+	);
+	$form['ie6']['jquery_colorpicker_ie6_support'] = array
+	(
+		'#type' => 'checkbox',
+		'#title' => t('Support IE6'),
+		'#default_value' => variable_get('jquery_colorpicker_ie6_support', 0),
+	);
+	return system_settings_form($form);
+}
