@@ -1,0 +1,7 @@
+name = Jquery Colorpicker CCK
+description = Creates a form element to be used in the form api that adds a color picker
+core = 6.x
+package = CCK
+
+dependencies[] = colorpicker_cck
+dependencies[] = jquery_colorpicker 

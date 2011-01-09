@@ -256,7 +256,7 @@ function theme_colorpicker($element)
 		$output .= '<span class="field-prefix">'. $element['#field_prefix'] .'</span> ';
 	}
 	
-	$output .= '<div id="' . $element['#name'] . '-inner_wrapper" class="inner_wrapper">';
+	$output .= '<div id="' . $element['#id'] . '-inner_wrapper" class="inner_wrapper">';
 	$output .= '<div class="color_picker" style="background-color:' . $default_color . '">';
 	$output .= '<span class="hash">#</span>';
 	$output .= '<input type="text"'. ' maxlength="6"' .' name="'. $element['#name'] .'" id="'. $element['#id'] .'"'. ' size="7"' .' value="'. check_plain($element['#value']) .'"'. drupal_attributes($element['#attributes']) .' />';
