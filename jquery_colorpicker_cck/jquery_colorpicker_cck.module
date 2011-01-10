@@ -1,5 +1,12 @@
 <?php
-
+// $Id$
+/**
+ * @file
+ * This file holds the main Drupal hook functions 
+ * and private functions for the jquery_colorpicker_cck module.
+ *
+ * @ingroup CCK
+ */
 
 /**
 * Implementation of hook_theme().
@@ -58,11 +65,11 @@ function jquery_colorpicker_cck_process($element, $edit, $form_state, $form) {
   $field = $form['#field_info'][$field_name];
   $field_key = $element['#columns'][0];
 
-  $default_value = isset($element['#value'][$field_key]) ? substr($element['#value'][$field_key],-6) : substr($field['widget']['default_value'][0]['value'],1);
+  $value = isset($element['#value'][$field_key]) ? substr($element['#value'][$field_key],-6) : (isset($field['widget']['default_value'][0]['value']) ? substr($field['widget']['default_value'][0]['value'],1) : 'FFFFFF');
 
   $element[$field_key] = array(
     '#type' => 'colorpicker',
-    '#default_value' => $default_value,
+    '#default_value' => $value,
     '#title' => $element['#title'],
     '#description' => $element['#description'],
     '#required' => $element['#required'],
@@ -71,8 +78,27 @@ function jquery_colorpicker_cck_process($element, $edit, $form_state, $form) {
     '#delta' => $element['#delta'],
     '#columns' => $element['#columns'],
   );
+
+  // Make sure we don't wipe out element validation added elsewhere.
+  if (empty($element['#element_validate'])) {
+    $element['#element_validate'] = array('jquery_colorpicker_cck_validate');
+  }
+  if (!empty($field['prefix'])) {
+    $prefixes = explode('|', $field['prefix']);
+    $element[$field_key]['#field_prefix'] = array_pop($prefixes);
+  }
+  if (!empty($field['suffix'])) {
+    $suffixes = explode('|', $field['suffix']);
+    $element[$field_key]['#field_suffix'] = array_pop($suffixes);
+  }
+
+  // Used so that hook_field('validate') knows where to flag an error.
+  $element['_error_element'] = array(
+    '#type' => 'value',
+    '#value' => implode('][', array_merge($element['#parents'], array($field_key))),
+  );
   
-  if(isset($edit)){
+if(isset($edit)){
     // Next we decide what background to use to render the element. In order to ensure the background exists, we create an array of
 // the two possibilities, that we will use to compare the value submitted in the Form API definition
 $backgrounds = array('select.png', 'select2.png');
@@ -95,27 +121,6 @@ $settings = array('ids' => array($element['#id'].'-value'), 'backgrounds' => arr
 // And we pass the settings in a namespace to the Javascript
 drupal_add_js(array('jqueryColorpicker' => $settings), 'setting');
   }
-  $prefixes = array();
-  $suffixes = array();
-
-  // Make sure we don't wipe out element validation added elsewhere.
-  if (empty($element['#element_validate'])) {
-    $element['#element_validate'] = array('jquery_colorpicker_cck_aaa');
-  }
-  if (!empty($field['prefix'])) {
-    $prefixes = explode('|', $field['prefix']);
-    $element[$field_key]['#field_prefix'] = array_pop($prefixes);
-  }
-  if (!empty($field['suffix'])) {
-    $suffixes = explode('|', $field['suffix']);
-    $element[$field_key]['#field_suffix'] = array_pop($suffixes);
-  }
-
-  // Used so that hook_field('validate') knows where to flag an error.
-  $element['_error_element'] = array(
-    '#type' => 'value',
-    '#value' => implode('][', array_merge($element['#parents'], array($field_key))),
-  );
 
   return $element;
 }
@@ -163,12 +168,7 @@ function theme_jquery_colorpicker_cck($element) {
   return $element['#children'];
 }
 
-function jquery_colorpicker_cck_widget_settings($op, $widget){
-  $a = $op;
-}
-
-
-function jquery_colorpicker_cck_aaa($element, &$form_state){
+function jquery_colorpicker_cck_validate($element, &$form_state){
  if(isset($form_state['values'][$element['#field_name']])){
 
 $form_state['values'][$element['#field_name']][$element['#delta']]['value'] = '#'. $form_state['values'][$element['#field_name']][$element['#delta']]['value'];
