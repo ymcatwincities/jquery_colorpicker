@@ -18,6 +18,60 @@ function jquery_colorpicker_cck_theme() {
 }
 
 /**
+ * Implementation of hook_field_info()
+ *
+ * If the colorpicker_cck module is installed,
+ * the code from that module is used instead.
+ */
+function jquery_colorpicker_cck_field_info() {
+  if(!module_exists('colorpicker_cck')) {
+    return array(
+      'colorpicker_cck_textfield' => array(
+        'label' => t('Colorpicker'),
+        'description' => t('Store a jquery_colorpicker_cck in the database as an integer.'),
+      ),
+    );
+  }
+}
+
+/**
+ * Implementation of hook_field()
+ *
+ * If the colorpicker_cck module is installed,
+ * the code from that module is used instead.
+ */
+function jquery_colorpicker_cck_field($op, &$node, $field, &$items, $teaser, $page) {
+  if(!module_exists('colorpicker_cck')) {
+    if($op == 'validate') {
+      if(is_array($items)) {
+        foreach ($items as $delta => $item) {
+          $error_element = isset($item['_error_element']) ? $item['_error_element'] : '';
+           if ($item['value'] != '' && !preg_match('/^#(?:(?:[a-f\d]{3}){1,2})$/i', $item['value'])) {
+            form_set_error($error_element, "'". check_plain($item['value']) ."'". t(' is not a valid hex color'));
+          }
+        }
+      }
+    }
+    return $items;
+  }
+}
+
+/**
+ * Implementation of hook_content_is_empty().
+ *
+ * If the colorpicker_cck module is installed,
+ * the code from that module is used instead.
+ */
+function jquery_colorpicker_cck_content_is_empty($item, $field) {
+  if(!module_exists('colorpicker_cck')) {
+    if (empty($item['value']) && (string)$item['value'] !== '0') {
+      return TRUE;
+    }
+    return FALSE;
+  }
+}
+
+/**
  * Implementation of hook_cck_widget_info()
  */
 function jquery_colorpicker_cck_widget_info() {
