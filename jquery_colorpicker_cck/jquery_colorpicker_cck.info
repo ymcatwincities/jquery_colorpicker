@@ -3,5 +3,5 @@ description = Creates a form element to be used in the form api that adds a colo
 core = 6.x
 package = CCK
 
-dependencies[] = text
+dependencies[] = content
 dependencies[] = jquery_colorpicker 
