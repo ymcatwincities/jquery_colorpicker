@@ -4,7 +4,6 @@
 /**
  * Implementation of hook_perm()
  */
- 
 function jquery_colorpicker_perm()
 {
 	return array
@@ -19,138 +18,16 @@ function jquery_colorpicker_perm()
  * it outputs an error message for any users who have the required permissions to 
  * administer the module.
  */
- 
 function jquery_colorpicker_init()
 {
-	global $user;
-	// First we check to see if the user has the permissions to administer the module. Only users with this permssion set will 
-	// see error messages if the required files are missing.
-	if(user_access('administer jquery colorpicker', $user))
-	{
-		// We set the base path for the module, and will use this to check the existence of files
-		$path = drupal_get_path('module', 'jquery_colorpicker') . '/';
-		// The first file we check is the 3rd party integration. Without this file, the module will not work. Other
-		// files are also required, but the assumption is made that if they got this file, they will have gotten all the other files.
-		// This is done to keep code relatively streamlined.
-		if(!is_file($path . 'colorpicker/js/colorpicker.js'))
-		{
-			drupal_set_message
-			(
-				t
-				(
-					'You are missing the required files for the Jquery Colorpicker. Please download the colorpicker.zip from !eyecon and unzip the CSS, JS and IMAGES folders to !colorpicker_path. After doing this, confirm that the following path exists: !colorpicker_js_path.',
-					array
-					(
-						'!eyecon' => l
-						(
-							'http://www.eyecon.ro/colorpicker/',
-							'http://www.eyecon.ro/colorpicker/',
-							array
-							(
-								'html' => TRUE,
-							)
-						),
-						'!colorpicker_path' => '<strong>[modules_folder]/jquery_colorpicker/colorpicker</strong>',
-						'!colorpicker_js_path' => '<strong>[modules_folder]/jquery_colorpicker/colorpicker/js/colorpicker.js</strong>',
-					)
-				),
-				'error'
-			);
-		}
-		// The other files only need to be checked if IE6 is to be supported. So first we check to see if IE6 support has been enabled
-		if(variable_get('jquery_colorpicker_ie6_support', 0))
-		{
-			// next we set a new folder path where the IE6 support files will be located
-			$path .= 'twin_helix/';
-			// now we check the file blank.gif
-			if(!is_file($path . 'blank.gif'))
-			{
-				drupal_set_message
-				(
-					t
-					(
-						'You have enabled IE6 support for Jquery Colorpicker, but are missing the required file !blank.gif. This file can be downloaded from !twin_helix and should saved in !path', 
-						array
-						(
-							'!twin_helix' => l
-							(
-								'Twin Helix',
-								'http://www.twinhelix.com/css/iepngfix/',
-								array
-								(
-									'html' => TRUE,
-								)
-							),
-							'!path' => '<strong>' . $path . '</strong>',
-							'!blank.gif' => '<strong>blank.gif</strong>',
-						)
-					),
-					'error'
-				);
-			}
-			// here we check the file iepngfix.htc
-			if(!is_file($path . 'iepngfix.htc'))
-			{
-				drupal_set_message
-				(
-					t
-					(
-						'You have enabled IE6 support for Jquery Colorpicker, but are missing the required file !iepngfix.htc. This file can be downloaded from !twin_helix and should saved in !path',
-						array
-						(
-							'!twin_helix' => l
-							(
-								'Twin Helix',
-								'http://www.twinhelix.com/css/iepngfix/',
-								array
-								(
-									'html' => TRUE,
-								)
-							),
-							'!path' => '<strong>' . $path . '</strong>',
-							'!iepngfix.htc' => '<strong>iepngfix.htc</strong>',
-						)
-					),
-					'error'
-				);
-			}
-			// finally we check the file iepngfix_tilebg.js
-			if(!is_file($path . 'iepngfix_tilebg.js'))
-			{
-				drupal_set_message
-				(
-					t
-					(
-						'You have enabled IE6 support for Jquery Colorpicker, but are missing the required file !iepngfix_tilebg.js. This file can be downloaded from !twin_helix and should saved in !path',
-						array
-						(
-							'!twin_helix' => l
-							(
-								'Twin Helix',
-								'http://www.twinhelix.com/css/iepngfix/',
-								array
-								(
-									'html' => TRUE,
-								)
-							),
-							'!path' => '<strong>' . $path . '</strong>',
-							'!iepngfix_tilebg.js' => '<strong>iepngfix_tilebg.js</strong>',
-						)
-					),
-					'error'
-				);
-			}
-		}
-		// We set a variable indicating that this page does NOT require IE6 code to be added to the head. Then on pages where the code is required (any form that has
-		// the jquery element in it, when IE6 support is enabled) it will be set in the theme function for the element.
-		variable_set('jquery_colorpicker_ie6_page', 0);
-	}
+	// Set a variable indicating that this page does NOT require IE6 code to be added to the head. Then for pages where the code is required (on any form that has
+	// the jquery element in it, when IE6 support is enabled) it will be set in the theme function for the element.
+	variable_set('jquery_colorpicker_ie6_page', 0);
 }
 
 /**
  * Implementation of hook_menu()
  */
- 
 function jquery_colorpicker_menu()
 {
 	// This creates the URL for the settings page.
@@ -168,7 +45,6 @@ function jquery_colorpicker_menu()
 /**
  * Implementation of hook_elements()
  */
- 
 function jquery_colorpicker_elements()
 {
 	// this is the definition for the new form API element
@@ -187,7 +63,6 @@ function jquery_colorpicker_elements()
 /**
  * Implementation of hook_theme()
  */
- 
 function jquery_colorpicker_theme()
 {
 	return array
@@ -205,7 +80,6 @@ function jquery_colorpicker_theme()
 /**
  * callback theme for the new form element
  */
- 
 function theme_colorpicker($element)
 {
 	$class = array('form-colorpicker');
@@ -277,7 +151,6 @@ function theme_colorpicker($element)
 /**
  * Validation functinon for the new form element
  */
- 
 function jquery_colorpicker_validate($element, &$form_state)
 {
 	// All values must be 6 characters in length (will probably add support for 3 character definitions and predifined colors in version 2
@@ -301,7 +174,6 @@ function jquery_colorpicker_validate($element, &$form_state)
  * Implementation of theme_preprocess_page()
  * This function adds IE6 conditional comments to the <head> tags of the theme when IE6 support has been enabled for the module
  */
- 
 function jquery_colorpicker_preprocess_page(&$vars)
 {
 	// First we check to see if IE6 support has been enabled for the module. The following code is only executed when IE6 support is enabled
@@ -336,7 +208,6 @@ function jquery_colorpicker_preprocess_page(&$vars)
  * Callback function for the URL admin/settings/jquery_colorpicker
  * This function creates the settings page for the module
  */
- 
 function jquery_colorpicker_settings()
 {
 	// First we create a fieldset to make it all look nice. If ever other settings are enabled, this will keep the page looking nice
