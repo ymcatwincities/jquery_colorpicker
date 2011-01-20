@@ -14,6 +14,8 @@
 function jquery_colorpicker_cck_theme() {
   return array(
     'jquery_colorpicker_cck' => array('arguments' => array('element' => NULL)),
+    'jquery_colorpicker_cck_formatter_default' => array('arguments' => array('element' => NULL)),
+    'jquery_colorpicker_cck_formatter_markup' => array('arguments' => array('element' => NULL)),
   );
 }
 
@@ -54,6 +56,22 @@ function jquery_colorpicker_cck_field($op, &$node, $field, &$items, $teaser, $pa
     }
     return $items;
   }
+}
+
+/**
+ * Implementation of hook_field_settings().
+ */
+function jquery_colorpicker_cck_field_settings($op, $field) {
+	if(!module_exists('colorpicker_cck')) {
+		switch ($op) {
+	    case 'database columns':
+	      return array('value' => array('type' => 'varchar', 'length' => 64, 'not null' => FALSE, 'sortable' => TRUE));
+	
+	    case 'views data':
+	      $allowed_values = content_allowed_values($field);
+	      break;
+	  }
+	}
 }
 
 /**
@@ -103,6 +121,7 @@ function jquery_colorpicker_cck_elements() {
   return array(
     'jquery_colorpicker_cck' => array(
       '#input' => TRUE,
+  	  '#barco' => 'rojo',
       '#columns' => array('value'),
       '#delta' => 0,
       '#process' => array('jquery_colorpicker_cck_process'),
@@ -122,10 +141,10 @@ function jquery_colorpicker_cck_process($element, $edit, $form_state, $form) {
   $field_name = $element['#field_name'];
   $field = $form['#field_info'][$field_name];
   $field_key = $element['#columns'][0];
-
+  
   $value = isset($element['#value'][$field_key]) ? substr($element['#value'][$field_key],-6) : (isset($field['widget']['default_value'][0]['value']) ? substr($field['widget']['default_value'][0]['value'],1) : 'FFFFFF');
 
-  $element[$field_key] = array(
+  $element['value'] = array(
     '#type' => 'colorpicker',
     '#default_value' => $value,
     '#title' => $element['#title'],
@@ -214,6 +233,36 @@ function jquery_colorpicker_cck_widget(&$form, &$form_state, $field, $items, $de
     '#default_value' => isset($items[$delta]) ? $items[$delta] : /*array('value' =>$field['widget']['default_value'][0]['value'])*/'',
   );
   return $element;
+}
+
+function jquery_colorpicker_cck_field_formatter_info() {
+  return array(
+    'default' => array(
+      'label' => t('Default'),
+      'field types' => array('colorpicker_cck_textfield'),
+      'multiple values' => CONTENT_HANDLE_CORE,
+    ),
+    'markup' => array(
+      'label' => t('Markup'),
+      'field types' => array('colorpicker_cck_textfield'),
+      'multiple values' => CONTENT_HANDLE_CORE,
+    ),
+  );
+}
+
+
+/**
+ * Theme function for 'default' text field formatter.
+ */
+function theme_jquery_colorpicker_cck_formatter_default($element) {
+  return '<div class="colorpicker '. $element['#item']['value'] .'">'. check_plain($element['#item']['value']) .'</div>';
+}
+
+/**
+ * Theme function for 'plain' text field formatter.
+ */
+function theme_jquery_colorpicker_cck_formatter_markup($element) {
+  return '<div class="colorpicker" style="background-color: '. $element['#item']['value'] .'">&nbsp;</div>';
 }
 
 /**
