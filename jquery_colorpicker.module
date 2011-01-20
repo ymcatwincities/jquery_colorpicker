@@ -118,18 +118,18 @@ function theme_colorpicker($element)
 	}
 	// Finally we build an array of all the settings to be used by the javascript function
 	$settings = array('ids' => array($element['#id']), 'backgrounds' => array($background_url), 'backgroundColors' => array($default_color), $element['#id'] . '-defaultColor' => $default_color);
-	
+
 	// And we pass the settings in a namespace to the Javascript
 	drupal_add_js(array('jqueryColorpicker' => $settings), 'setting');
 
 	// Over the next few lines we build the output of the element in HTML and to send to the browser
 	_form_set_class($element, $class);
-	
+
 	if (isset($element['#field_prefix']))
 	{
 		$output .= '<span class="field-prefix">'. $element['#field_prefix'] .'</span> ';
 	}
-	
+
 	$output .= '<div id="' . $element['#id'] . '-inner_wrapper" class="inner_wrapper">';
 	$output .= '<div class="color_picker" style="background-color:' . $default_color . '">';
 	$output .= '<span class="hash">#</span>';
@@ -137,12 +137,12 @@ function theme_colorpicker($element)
 	$output .= '<div class="description">' . t('Enter a hexidecimal color value. Enabling javascript will replace this input with a graphical color selector.') . '</div>';
 	$output .= '</div>';
 	$output .= '</div>';
-	
+
 	if (isset($element['#field_suffix']))
 	{
 		$output .= '<span class="field-suffix">'. $element['#field_suffix'] .'</span>';
 	}
-	
+
 	// and finally we pass the newly built element output to the form API to take care of the rest of the rendering
 	return theme('form_element', $element, $output);
 
