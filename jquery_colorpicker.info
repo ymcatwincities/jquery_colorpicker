@@ -1,4 +1,7 @@
 ; $Id$
 name = Jquery Colorpicker
-description = Creates a form element to be used in the form api that adds a color picker 
-core = 6.x
+description = Creates Form API jquery colorpicker element
+core = 7.x
+
+files[] = jquery_colorpicker.install
+files[] = jquery_colorpicker.module
