@@ -136,3 +136,23 @@ function jquery_colorpicker_requirements($phase)
 		return $errors;
 	}
 }
+
+/**
+ * Implementation of hook_field_schema()
+ */
+function jquery_colorpicker_field_schema($field)
+{
+	$columns = array
+	(
+		'jquery_colorpicker' => array
+		(
+			'type' => 'varchar',
+			'length' => 6,
+			'not null' => FALSE,
+		),
+	);
+	return array
+	(
+		'columns' => $columns,
+	);
+}

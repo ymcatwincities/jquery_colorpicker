@@ -71,6 +71,7 @@ function jquery_colorpicker_theme()
 function theme_jquery_colorpicker($variables)
 {
 	$element = $variables['element'];
+	
 	$class = array('form-colorpicker');
 	$output = '';
 
@@ -84,7 +85,7 @@ function theme_jquery_colorpicker($variables)
 	// Since we know the background, we can then get the URL of it to pass to the javascript function
 	$background_url = base_path() . $path .'colorpicker/images/' . $background;
 	// next we determine what the default value for the form element is. This will also be passed to the javascript function.
-	if(strlen($element['#value']))
+	if(isset($element['#value']) && strlen($element['#value']))
 	{
 		$default_color = '#' . $element['#value'];
 	}
@@ -158,7 +159,8 @@ function theme_jquery_colorpicker($variables)
 	$output .= '<div id="' . $element['#id'] . '-inner_wrapper" class="inner_wrapper">';
 	$output .= '<div class="color_picker" style="background-color:' . $default_color . '">';
 	$output .= '<span class="hash">#</span>';
-	$output .= '<input type="text"'. ' maxlength="6"' .' name="'. $element['#name'] .'" id="'. $element['#id'] .'"'. ' size="7"' .' value="'. check_plain($element['#value']) .'"'. drupal_attributes($element['#attributes']) .' />';
+	$name = isset($element['#name']) ? $element['#name'] : $element['#id'];
+	$output .= '<input type="text"'. ' maxlength="6"' .' name="'. $name .'" id="'. $element['#id'] .'"'. ' size="7"' .' value="'. check_plain($element['#value']) .'"'. drupal_attributes($element['#attributes']) .' />';
 	$output .= '<div class="description">' . t('Enter a hexidecimal color value. Enabling javascript will replace this input with a graphical color selector.') . '</div>';
 	$output .= '</div>';
 	$output .= '</div>';
@@ -174,7 +176,7 @@ function theme_jquery_colorpicker($variables)
 }
 
 /**
- * Validation functinon for the new form element
+ * Validation function for the new form element
  */
 function jquery_colorpicker_validate($element, &$form_state)
 {
@@ -221,3 +223,152 @@ function jquery_colorpicker_settings()
 	);
 	return system_settings_form($form);
 }
+
+/**
+ * Implementation of hook_field_info()
+ */
+function jquery_colorpicker_field_info()
+{
+	return array
+	(
+		'jquery_colorpicker' => array
+		(
+			'label' => t('jQuery Colorpicker'),
+			'description' => t('A colorpicker pop that uses the jQuery Colorpicker'),
+			'default_widget' => 'jquery_colorpicker',
+			'default_formatter' => 'jquery_colorpicker_color_display',
+		),
+	);
+}
+
+/**
+ * Implementation of hook_field_validate()
+ */
+function jquery_colorpicker_field_validate($entity_type, $entity, $field, $instance, $langcode, $items, &$errors)
+{
+	foreach($items as $delta => $item)
+	{
+		if(!empty($item['jquery_colorpicker']))
+		{
+			// All values must be 6 characters in length (will probably add support for 3 character definitions and predifined colors in version 2
+			if(strlen($item['jquery_colorpicker']) != 6)
+			{
+				$errors[$field['field_name']][$langcode][$delta][] = array
+				(
+					'error' => 'jquery_colorpicker_color_not_long_enough',
+					'message' => t('Color values must be exactly six characters in length'),
+				);
+			}
+			// All values must not include the hash symbol
+			elseif(preg_match('/^#/', $item['jquery_colorpicker']))
+			{
+				$errors[$field['field_name']][$langcode][$delta][] = array
+				(
+					'error' => 'jquery_colorpicker_starts_with_hash',
+					'message' => t('Do not include the hash symbol (#) when entering colors'),
+				);
+			}
+			// All values must be hexadecimal values
+			elseif(!preg_match('/^[0-9a-fA-F]{6}$/i', $item['jquery_colorpicker']))
+			{
+				$errors[$field['field_name']][$langcode][$delta][] = array
+				(
+					'error' => 'jquery_colorpicker_not_jquery_colorpicker',
+					'message' => t("You entered an invalid value for the color. Colors must be hexadecimal, and can only contain the characters '0-9', 'a-f' and/or 'A-F'."),
+				);
+			}
+		}
+	}
+}
+
+/**
+ * Implementation of hook_field_is_empty
+ */
+function jquery_colorpicker_field_is_empty($item, $field)
+{
+	return empty($item['jquery_colorpicker']);
+}
+
+/**
+ * Implementation of hook_field_formatter_info()
+ */
+function jquery_colorpicker_field_formatter_info()
+{
+	return array
+	(
+		'jquery_colorpicker_color_display' => array
+		(
+			'label' => t('Colored block'),
+			'field_types' => array('jquery_colorpicker'),
+		),
+		'jquery_colorpicker_text_display' => array
+		(
+			'label' => t('Text'),
+			'field_types' => array('jquery_colorpicker'),
+		),
+	);
+}
+
+/**
+ * Implementation of hook_field_formatter_view()
+ */
+function jquery_colorpicker_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display)
+{
+	$element = array();
+	foreach($items as $delta => $item)
+	{
+		if($display['type'] == 'jquery_colorpicker_color_display')
+		{
+			$element[$delta]['#markup'] = '<div id="jquery_colorpicker_color_display_' . $instance['id'] . '">&nbsp;</div>';
+			$element[$delta]['#attached']['css'][] = array
+			(
+				'type' => 'inline',
+				'data' => '#jquery_colorpicker_color_display_' . $instance['id'] . '{background-color:#' . $item['jquery_colorpicker'] . ';}',
+			);
+		}
+		elseif($display['type'] == 'jquery_colorpicker_text_display')
+		{
+			$element[$delta]['#markup'] = '<div class="jquery_colorpicker_text_display"><span class="jquery_colorpicker_hash_mark">#</span>' . $item['jquery_colorpicker'] . '</div>';
+		}
+	}
+	return $element;
+}
+
+/**
+ * Implementation of hook_field_widget_info()
+ */
+function jquery_colorpicker_field_widget_info()
+{
+	return array
+	(
+		'jquery_colorpicker' => array
+		(
+			'label' => t('jQuery Colorpicker'),
+			'field types' => array('jquery_colorpicker'),
+		),
+	);
+}
+
+/**
+ * Implementation of hook_widget_form()
+ */
+function jquery_colorpicker_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element)
+{
+	$value = (isset($items[$delta]['jquery_colorpicker'])) ? $items[$delta]['jquery_colorpicker'] : '';
+	$element += array
+	(
+		'#delta' => $delta,
+	);
+	$element['jquery_colorpicker'] = array();
+	if($instance['widget']['type'] == 'jquery_colorpicker')
+	{
+		$element['jquery_colorpicker'] += array
+		(
+			'#title' => t('Color'),
+			'#type' => 'jquery_colorpicker',
+			'#default_value' => $value,
+		);
+	}
+	return $element;
+}
+
