@@ -320,11 +320,10 @@ function jquery_colorpicker_field_formatter_view($entity_type, $entity, $field, 
 	{
 		if($display['type'] == 'jquery_colorpicker_color_display')
 		{
-			$element[$delta]['#markup'] = '<div id="jquery_colorpicker_color_display_' . $instance['id'] . '">&nbsp;</div>';
-			$element[$delta]['#attached']['css'][] = array
+        $element[$delta]['#markup'] = '<div id="jquery_colorpicker_color_display_' . $instance['id'] . '_' . $delta . '_' . $item['jquery_colorpicker'] . '">&nbsp;</div>';			$element[$delta]['#attached']['css'][] = array
 			(
 				'type' => 'inline',
-				'data' => '#jquery_colorpicker_color_display_' . $instance['id'] . '{background-color:#' . $item['jquery_colorpicker'] . ';}',
+				'data' => '#jquery_colorpicker_color_display_' . $instance['id'] . '_' . $delta . '_' . $item['jquery_colorpicker'] . '{background-color:#' . $item['jquery_colorpicker'] . ';}',
 			);
 		}
 		elseif($display['type'] == 'jquery_colorpicker_text_display')
