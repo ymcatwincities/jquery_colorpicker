@@ -74,7 +74,9 @@ function theme_jquery_colorpicker($variables)
 	$class = array('form-colorpicker');
 	$output = '';
 
-	$path = drupal_get_path('module', 'jquery_colorpicker') . '/';
+	$path = module_exists('libraries') && in_array('colorpicker', array_keys(libraries_get_libraries()))
+	  ? libraries_get_path('colorpicker')
+	  : drupal_get_path('module', 'jquery_colorpicker') . '/colorpicker';
 	
 	// Decide what background to use to render the element. In order to ensure the background exists, we create an array of
 	// the two possibilities, that we will use to compare the value submitted in the Form API definition
@@ -82,7 +84,7 @@ function theme_jquery_colorpicker($variables)
 	// Now we check to see if the value in the Form API definition is valid. If it is, we use it, if it's not, we use a default value
 	$background = (in_array($element['#jquery_colorpicker_background'], $backgrounds)) ? $element['#jquery_colorpicker_background'] : 'select.png';
 	// Since we know the background, we can then get the URL of it to pass to the javascript function
-	$background_url = base_path() . $path .'colorpicker/images/' . $background;
+	$background_url = base_path() . $path . '/images/' . $background;
 	// next we determine what the default value for the form element is. This will also be passed to the javascript function.
 	if(isset($element['#value']) && strlen($element['#value']))
 	{
@@ -105,14 +107,14 @@ function theme_jquery_colorpicker($variables)
 		'css' => array
 		(
 			// Add the 3rd party CSS files required for the form elmeent
-			$path . 'colorpicker/css/colorpicker.css',
+			$path . '/css/colorpicker.css',
 		),
 		'js' => array
 		(
 			// Add the 3rd party JS files required for the form element
-			$path . 'colorpicker/js/colorpicker.js',
+			$path . '/js/colorpicker.js',
 			// Add the module js files
-			$path . 'js/jquery_colorpicker.js',
+			drupal_get_path('module', 'jquery_colorpicker') . '/js/jquery_colorpicker.js',
 			// Add the settings
 			array
 			(
