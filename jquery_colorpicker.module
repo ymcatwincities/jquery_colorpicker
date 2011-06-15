@@ -300,12 +300,12 @@ function jquery_colorpicker_field_formatter_info()
 		'jquery_colorpicker_color_display' => array
 		(
 			'label' => t('Colored block'),
-			'field_types' => array('jquery_colorpicker'),
+			'field types' => array('jquery_colorpicker'),
 		),
 		'jquery_colorpicker_text_display' => array
 		(
 			'label' => t('Text'),
-			'field_types' => array('jquery_colorpicker'),
+			'field types' => array('jquery_colorpicker'),
 		),
 	);
 }
@@ -320,7 +320,8 @@ function jquery_colorpicker_field_formatter_view($entity_type, $entity, $field, 
 	{
 		if($display['type'] == 'jquery_colorpicker_color_display')
 		{
-        $element[$delta]['#markup'] = '<div id="jquery_colorpicker_color_display_' . $instance['id'] . '_' . $delta . '_' . $item['jquery_colorpicker'] . '">&nbsp;</div>';			$element[$delta]['#attached']['css'][] = array
+			$element[$delta]['#markup'] = '<div id="jquery_colorpicker_color_display_' . $instance['id'] . '_' . $delta . '_' . $item['jquery_colorpicker'] . '">&nbsp;</div>';
+			$element[$delta]['#attached']['css'][] = array
 			(
 				'type' => 'inline',
 				'data' => '#jquery_colorpicker_color_display_' . $instance['id'] . '_' . $delta . '_' . $item['jquery_colorpicker'] . '{background-color:#' . $item['jquery_colorpicker'] . ';}',
@@ -354,7 +355,9 @@ function jquery_colorpicker_field_widget_info()
  */
 function jquery_colorpicker_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element)
 {
-	$value = (isset($items[$delta]['jquery_colorpicker'])) ? $items[$delta]['jquery_colorpicker'] : '';
+	$value = '';
+  if (isset($instance['default_value'][$delta]['jquery_colorpicker'])) $value = $instance['default_value'][$delta]['jquery_colorpicker'];
+  if (isset($items[$delta]['jquery_colorpicker'])) $value = $items[$delta]['jquery_colorpicker'];
 	$element += array
 	(
 		'#delta' => $delta,
@@ -364,7 +367,7 @@ function jquery_colorpicker_field_widget_form(&$form, &$form_state, $field, $ins
 	{
 		$element['jquery_colorpicker'] += array
 		(
-			'#title' => t('Color'),
+			'#title' => $instance['label'],
 			'#type' => 'jquery_colorpicker',
 			'#default_value' => $value,
 		);
