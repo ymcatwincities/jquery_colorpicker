@@ -163,7 +163,8 @@ function theme_jquery_colorpicker($variables)
 	$output .= '<div class="color_picker" style="background-color:' . $default_color . '">';
 	$output .= '<span class="hash">#</span>';
 	$name = isset($element['#name']) ? $element['#name'] : $element['#id'];
-	$output .= '<input type="text"'. ' maxlength="6"' .' name="'. $name .'" id="'. $element['#id'] .'"'. ' size="7"' .' value="'. isset($element['#value']) ? check_plain($element['#value']) : '' .'"'. drupal_attributes($element['#attributes']) .' />';
+	$value = isset($element['#value']) ? check_plain($element['#value']) : '';
+	$output .= '<input type="text"'. ' maxlength="6"' .' name="'. $name .'" id="'. $element['#id'] .'"'. ' size="7"' .' value="'. $value .'"'. drupal_attributes($element['#attributes']) .' />';
 	$output .= '<div class="description">' . t('Enter a hexidecimal color value. Enabling javascript will replace this input with a graphical color selector.') . '</div>';
 	$output .= '</div>';
 	$output .= '</div>';
