@@ -65,7 +65,7 @@
 					},
 					onChange: function (hsb, hex, rgb)
 					{
-						$("#" + target + " .color_picker").css("backgroundColor", "#" + hex).find("input").val(hex);
+						$("#" + target + " .color_picker").css("backgroundColor", "#" + hex).find("input").val(hex).change();
 					}
 				});
 			});
