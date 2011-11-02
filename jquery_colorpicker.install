@@ -100,9 +100,7 @@ function jquery_colorpicker_requirements($phase)
 	}
 	elseif($phase == 'install')
 	{
-		$path =  module_exists('libraries') && in_array('colorpicker', array_keys(libraries_get_libraries()))
-		  ? libraries_get_path('colorpicker')
-		  : drupal_get_path('module', 'jquery_colorpicker') . '/colorpicker';
+		$path = libraries_get_path('colorpicker');
 		// The first file we check is the 3rd party integration. Without this file, the module will not work. Other
 		// files are also required, but the assumption is made that if they got this file, they will have gotten all the other files.
 		// This is done to keep code relatively streamlined.
@@ -114,7 +112,7 @@ function jquery_colorpicker_requirements($phase)
 				'title' => $t('Required files missing'),
 				'description' => $t
 				(
-					'<h2>jQuery Colorpicker not installed</h2>You are missing the required files for the Jquery Colorpicker. Please download the colorpicker.zip from !eyecon and unzip the CSS, JS and IMAGES folders to !colorpicker_path. After doing this, confirm that the following path exists: !colorpicker_js_path.',
+					'<h2>jQuery Colorpicker not installed</h2><br>You are missing the required files for the Jquery Colorpicker. Please download the colorpicker.zip from !eyecon and unzip the CSS, JS and IMAGES folders to !colorpicker_path. After doing this, confirm that the following path exists: !colorpicker_js_path.',
 					array
 					(
 						'!eyecon' => l

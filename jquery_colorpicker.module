@@ -76,9 +76,7 @@ function theme_jquery_colorpicker($variables)
 	$class = array('form-colorpicker');
 	$output = '';
 
-	$path = module_exists('libraries') && in_array('colorpicker', array_keys(libraries_get_libraries()))
-	  ? libraries_get_path('colorpicker')
-	  : drupal_get_path('module', 'jquery_colorpicker') . '/colorpicker';
+	$path = libraries_get_path('colorpicker');
 	
 	// Decide what background to use to render the element. In order to ensure the background exists, we create an array of
 	// the two possibilities, that we will use to compare the value submitted in the Form API definition
