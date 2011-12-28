@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Implementation of hook_perm()
+ * Implementation of hook_permission()
  */
 function jquery_colorpicker_permission()
 {
@@ -146,7 +146,7 @@ function theme_jquery_colorpicker($variables)
 			'type' => 'inline',
 		);
 	}	
-
+	
 	// And we pass the settings in a namespace to the Javascript
 	drupal_add_js(array('jqueryColorpicker' => $settings), 'setting');
 	// Over the next few lines we build the output of the element in HTML and to send to the browser
@@ -166,6 +166,14 @@ function theme_jquery_colorpicker($variables)
 	$output .= '<div class="description">' . t('Enter a hexidecimal color value. Enabling javascript will replace this input with a graphical color selector.') . '</div>';
 	$output .= '</div>';
 	$output .= '</div>';
+	if (isset($element['#cardinality'])) {
+	  if ($element['#cardinality'] == FIELD_CARDINALITY_UNLIMITED) {
+	    $output .= '<div>' . l(t('Remove'), '#', array('html' => true, 'attributes' => array('onclick' => 'jQuery(\'#'.$element['#id'].'\').find(\'input\').val(\'\'); jQuery(\'#'.$element['#id'].'\').parent().parent().parent().hide(); return false;'))) . '</div>';
+	  }
+	  else {
+	    $output .= '<div>' . l(t('Clear'), '#', array('html' => true, 'attributes' => array('onclick' => 'jQuery(\'#'.$element['#id'].'\').find(\'input\').val(\'\'); return false'))) . '</div>';
+	  }
+	}
 	$output .= '</div>';
 
 	if (isset($element['#field_suffix']))
@@ -371,6 +379,7 @@ function jquery_colorpicker_field_widget_form(&$form, &$form_state, $field, $ins
 			'#title' => $instance['label'],
 			'#type' => 'jquery_colorpicker',
 			'#default_value' => $value,
+			'#cardinality' => $field['cardinality'],
 		);
 	}
 	return $element;
