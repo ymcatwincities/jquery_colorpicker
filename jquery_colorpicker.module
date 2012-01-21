@@ -247,6 +247,7 @@ function jquery_colorpicker_field_info()
 			'description' => t('A colorpicker pop that uses the jQuery Colorpicker'),
 			'default_widget' => 'jquery_colorpicker',
 			'default_formatter' => 'jquery_colorpicker_color_display',
+			'property_type' => 'text',
 		),
 	);
 }
