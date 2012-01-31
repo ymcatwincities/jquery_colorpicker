@@ -132,10 +132,9 @@ function jquery_colorpicker_requirements($phase)
 			);
 		}
 	}
-	if(count($errors))
-	{
-		return $errors;
-	}
+
+	return $errors;
+
 }
 
 /**
