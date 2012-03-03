@@ -382,10 +382,11 @@ function jquery_colorpicker_field_widget_form(&$form, &$form_state, $field, $ins
 	{
 		$element['jquery_colorpicker'] += array
 		(
-			'#title' => $instance['label'],
-			'#type' => 'jquery_colorpicker',
-			'#default_value' => $value,
-			'#cardinality' => $field['cardinality'],
+      '#title' => $instance['label'],
+      '#type' => 'jquery_colorpicker',
+      '#default_value' => $value,
+      '#cardinality' => $field['cardinality'],
+      '#description' => $element['#description'],
 		);
 	}
 	return $element;
