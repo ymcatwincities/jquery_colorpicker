@@ -300,7 +300,10 @@ function jquery_colorpicker_field_formatter_view($entity_type, $entity, $field, 
   $element = array();
   foreach ($items as $delta => $item) {
     if ($display['type'] == 'jquery_colorpicker_color_display') {
-      $element[$delta]['#markup'] = '<div id ="jquery_colorpicker_color_display_' . $entity->nid . '_' . $instance['id'] . '_' . $delta . '" class="jquery_colorpicker_color_display_' . $instance['id'] . '_' . $delta . '_' . $item['jquery_colorpicker'] . '">&nbsp;</div>';
+      if ($entity_type == 'taxonomy_term') {
+        $entity->nid = $entity->tid;
+      }
+      $element[$delta]['#markup'] = '<div id ="jquery_colorpicker_color_display_' . $entity->nid . '_' . $instance['id'] . '_' . $delta . '" class="jquery_colorpicker_color_display jquery_colorpicker_color_display_' . $instance['id'] . ' jquery_colorpicker_color_display_' . $instance['id'] . '_' . $delta . '_' . $item['jquery_colorpicker'] . '">&nbsp;</div>';
 
       $css_attachment = array(
         'type' => 'inline',
