@@ -55,6 +55,12 @@ function jquery_colorpicker_theme() {
     'jquery_colorpicker' => array(
       'render element' => 'element'
     ),
+    'jquery_colorpicker_color_display' => array(
+      'variables' => array('entity_id' => NULL, 'instance_id' => NULL, 'entity_delta' => NULL, 'item' => NULL),
+    ),
+    'jquery_colorpicker_text_display' => array(
+      'variables' => array('item' => NULL),
+    ),
   );
 }
 
@@ -308,7 +314,14 @@ function jquery_colorpicker_field_formatter_view($entity_type, $entity, $field, 
         if ($entity_type == 'taxonomy_term') {
           $entity->nid = $entity->tid;
         }
-        $element[$delta]['#markup'] = '<div id ="jquery_colorpicker_color_display_' . $entity->nid . '_' . $instance['id'] . '_' . $delta . '" class="jquery_colorpicker_color_display jquery_colorpicker_color_display_' . $instance['id'] . ' jquery_colorpicker_color_display_' . $instance['id'] . '_' . $delta . '_' . $item['jquery_colorpicker'] . '">&nbsp;</div>';
+        //$element[$delta]['#markup'] = '<div id ="jquery_colorpicker_color_display_' . $entity->nid . '_' . $instance['id'] . '_' . $delta . '" class="jquery_colorpicker_color_display jquery_colorpicker_color_display_' . $instance['id'] . ' jquery_colorpicker_color_display_' . $instance['id'] . '_' . $delta . '_' . $item['jquery_colorpicker'] . '">&nbsp;</div>';
+        $element[$delta] = array(
+          '#theme' => 'jquery_colorpicker_color_display',
+          '#entity_id' => $entity->nid,
+          '#instance_id' => $instance['id'],
+          '#entity_delta' => $delta,
+          '#item' => $item['jquery_colorpicker']
+        );
         $css_attachment = array(
           'type' => 'inline',
           'data' => '.jquery_colorpicker_color_display_' . $instance['id'] . '_' . $delta . '_' . $item['jquery_colorpicker'] . '{background-color:#' . $item['jquery_colorpicker'] . ';}',
@@ -320,7 +333,11 @@ function jquery_colorpicker_field_formatter_view($entity_type, $entity, $field, 
         break;
 
       case 'jquery_colorpicker_text_display':
-        $element[$delta]['#markup'] = '<div class="jquery_colorpicker_text_display"><span class="jquery_colorpicker_hash_mark">#</span>' . $item['jquery_colorpicker'] . '</div>';
+        $element[$delta] = array(
+          '#theme' => 'jquery_colorpicker_text_display',
+          '#item' => $item['jquery_colorpicker']
+        );
+//         $element[$delta]['#markup'] = '<div class="jquery_colorpicker_text_display"><span class="jquery_colorpicker_hash_mark">#</span>' . $item['jquery_colorpicker'] . '</div>';
         break;
 
       case 'jquery_colorpicker_raw_hex_display':
@@ -368,4 +385,12 @@ function jquery_colorpicker_field_widget_form(&$form, &$form_state, $field, $ins
     );
   }
   return $element;
+}
+
+function theme_jquery_colorpicker_color_display($variables) {
+  return '<div id ="jquery_colorpicker_color_display_' . $variables['entity_id'] . '_' . $variables['instance_id'] . '_' . $variables['entity_delta'] . '" class="jquery_colorpicker_color_display jquery_colorpicker_color_display_' . $variables['instance_id'] . ' jquery_colorpicker_color_display_' . $variables['instance_id'] . '_' . $variables['entity_delta'] . '_' . $variables['item'] . '">&nbsp;</div>';
+}
+
+function theme_jquery_colorpicker_text_display($variables) {
+  return '<div class="jquery_colorpicker_text_display"><span class="jquery_colorpicker_hash_mark">#</span>' . $variables['item'] . '</div>';
 }
