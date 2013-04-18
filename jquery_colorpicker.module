@@ -118,11 +118,6 @@ function theme_jquery_colorpicker($variables) {
       $path . '/js/colorpicker.js',
       // Add the module js files.
       drupal_get_path('module', 'jquery_colorpicker') . '/js/jquery_colorpicker.js',
-      // Add the settings.
-      array(
-        'data' => $settings,
-        'type' => 'setting',
-      ),
     ),
   );
   // If IE6 support is enabled, attach the inline CSS and JS that will reside in conditional comments.
