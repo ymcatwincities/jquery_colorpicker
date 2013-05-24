@@ -1,0 +1,7 @@
+name: Jquery colorpicker
+type: module
+description: 'Creates Form API jquery colorpicker element and its own color field'
+package: Field
+core: 8.x
+dependencies:
+  - field
