@@ -46,10 +46,15 @@ class JQueryColorpicker extends FormElement
 	{
 		if(strlen($element['#value']))
 		{
-			$results = \Drupal::service('jquery_colorpicker.service')->validateColor($element['#value']);
+			$jquery_colorpicker_service = \Drupal::service('jquery_colorpicker.service');
+			$color = $jquery_colorpicker_service->formatColor($element['#value']);
+			if($color != $element['#value'])
+			{
+				$form_state->setValueForElement($element, $color);
+			}
 
-			$form_state->setValueForElement($element, $results['color']);
-			if(isset($results['error']))
+			$error = $jquery_colorpicker_service->validateColor($element['#value']);
+			if($error)
 			{
 				$form_state->setError($element, $results['error']);
 			}

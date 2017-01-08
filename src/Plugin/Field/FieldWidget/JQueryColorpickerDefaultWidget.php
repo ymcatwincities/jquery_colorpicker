@@ -130,18 +130,4 @@ class JQueryColorpickerDefaultWidget extends WidgetBase implements WidgetInterfa
 
 		return $element;
 	}
-
-	/**
-	 * Validate the field
-	 */
-	public function validate($element, FormStateInterface $form_state)
-	{
-		$results = $this->JQueryColorpickerService->validateColor($element['#value']);
-
-		$form_state->setValueForElement($element, $results['color']);
-		if(isset($results['error']))
-		{
-			$form_state->setError($element, $results['error']);
-		}
-	}
 }
