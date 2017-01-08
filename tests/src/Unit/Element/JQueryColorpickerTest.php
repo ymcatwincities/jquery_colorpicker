@@ -48,4 +48,14 @@ class JQueryColorpickerTest extends UnitTestCase
 
 		return $data;
 	}
+
+	/**
+	 * @covers ::valueCallback
+	 */
+	public function testValidateElementEmpty()
+	{
+		$element = ['#value' => ''];
+		$form_state = $this->prophesize(FormStateInterface::class)->reveal();
+		$this->assertSame(NULL, JQueryColorpicker::validateElement($element, $form_state));
+	}
 }

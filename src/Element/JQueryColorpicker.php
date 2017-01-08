@@ -42,7 +42,7 @@ class JQueryColorpicker extends FormElement
 		];
 	}
 
-	public static function validateElement(&$element, FormStateInterface $form_state, &$complete_form)
+	public static function validateElement(&$element, FormStateInterface $form_state)
 	{
 		if(strlen($element['#value']))
 		{
