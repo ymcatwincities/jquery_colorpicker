@@ -146,7 +146,6 @@
 
 	function init(context)
 	{
-		// Initialize some CSS settings - adding the background that the user has chosen etc.
 		$.each(drupalSettings.jqueryColorpicker.elements, function(index)
 		{
 			// The following gives the ID of the element to will use as a point of reference for the settings
