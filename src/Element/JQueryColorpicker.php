@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\jquery_colorpicker\Element\JQueryColorpicker
- */
-
 namespace Drupal\jquery_colorpicker\Element;
 
 use Drupal\Component\Utility\Html;

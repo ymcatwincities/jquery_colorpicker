@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @file Contains Drupal\jquery_colorpicker\Service\JQueryColorpickeService
- */
-
 namespace Drupal\jquery_colorpicker\Service;
 
 use Drupal\Core\StringTranslation\StringTranslationTrait;

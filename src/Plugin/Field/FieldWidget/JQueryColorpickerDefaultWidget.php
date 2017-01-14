@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\jquery_colorpicker\Plugin\Field\FieldWidget\JQueryColorpickerDefaultWidget
- */
-
 namespace Drupal\jquery_colorpicker\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Field\FieldDefinitionInterface;

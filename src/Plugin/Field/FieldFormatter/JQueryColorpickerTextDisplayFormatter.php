@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @file Contains Drupal\jquery_colorpicker\Plugin\Field\FieldFormatter\JQueryColorpickerTextDisplayFormatter
- */
-
 namespace Drupal\jquery_colorpicker\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FormatterBase;

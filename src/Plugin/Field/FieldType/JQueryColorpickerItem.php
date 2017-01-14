@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @file Contains Drupal\jquery_colorpicker\Plugin\Field\FieldType\JQueryColorpickerItem
- */
-
 namespace Drupal\jquery_colorpicker\Plugin\Field\FieldType;
 
 use Drupal\Core\Field\FieldItemBase;
