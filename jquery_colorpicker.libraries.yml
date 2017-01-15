@@ -2,9 +2,9 @@ library:
   version: 1.0.1
   css:
     theme:
-      vendor/jaypan/jquery_colorpicker/css/colorpicker.css: {}
+      /libraries/jquery_colorpicker/css/colorpicker.css: {}
   js:
-    vendor/jaypan/jquery_colorpicker/js/colorpicker.js: {}
+    /libraries/jquery_colorpicker/js/colorpicker.js: {}
   dependencies:
     - core/jquery
 

@@ -1,9 +1,0 @@
-{
-	"name": "drupal/jquery_colorpicker",
-	"description": "The jQuery Colorpicker library",
-	"type": "drupal-module",
-	"license": "GPL-2.0+",
-	"require": {
-		"jaypan/jquery_colorpicker": "^1.0.1"
-	}
-}

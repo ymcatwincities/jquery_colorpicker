@@ -80,7 +80,7 @@ class JQueryColorpicker extends FormElement
 		$background = isset($element['#jquery_colorpicker_background']) && in_array($element['#jquery_colorpicker_background'], $backgrounds) ? $element['#jquery_colorpicker_background'] : 'select.png';
 		// Since we know the background, we can then get the URL of it to pass to the javascript function.
 
-		$background_url = file_create_url(drupal_get_path('module', 'jquery_colorpicker') . '/vendor/jaypan/jquery_colorpicker/images/' . $background);
+		$background_url = file_create_url('/libraries/jquery_colorpicker/images/' . $background);
 		// Next we determine what the default value for the form element is. This will also be passed to the javascript function.
 
 		$element['#attached']['drupalSettings']['jqueryColorpicker']['elements'][$element['#id']]['background'] = $background_url;
