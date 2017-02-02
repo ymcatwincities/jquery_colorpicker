@@ -13,7 +13,8 @@ use Drupal\Core\TypedData\DataDefinition;
  * @FieldType(
  *   id = "jquery_colorpicker",
  *   label = @Translation("jQuery Colorpicker"),
- *   default_formatter = "jquery_colorpicker_color_display"
+ *   default_formatter = "jquery_colorpicker_color_display",
+ *   default_widget = "jquery_colorpicker",
  * )
  */
 class JQueryColorpickerItem extends FieldItemBase implements FieldItemInterface
