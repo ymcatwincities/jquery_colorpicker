@@ -7,7 +7,6 @@ use Drupal\Core\Field\FieldItemInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\TypedData\DataDefinition;
 
-
 /**
  * Provides the jquery_colorpicker field type
  *

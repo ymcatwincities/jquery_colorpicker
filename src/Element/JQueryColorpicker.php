@@ -4,6 +4,7 @@ namespace Drupal\jquery_colorpicker\Element;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Render\Element\FormElement;
 use Drupal\jquery_colorpicker\Service\JQueryColorpickerServiceInterface;
 
@@ -19,10 +20,15 @@ class JQueryColorpicker extends FormElement
 		$class = get_class($this);
 		return [
 			'#input' => TRUE,
+			'#maxlength' => 7,
+			'#size' => 7,
 			'#element_validate' => [
 				[$class, 'validateElement'],
 			],
 			'#jquery_colorpicker_background' => 'select.png',
+			'#pre_render' => [
+				[$class, 'preRenderJQueryColorpicker'],
+			],
 			'#process' => [
 				'Drupal\Core\Render\Element\RenderElement::processAjaxForm',
 				[$class, 'processElement'],
@@ -66,6 +72,26 @@ class JQueryColorpicker extends FormElement
 		}
 
 		return NULL;
+	}
+
+	/**
+	 * Prepares a #type 'jquery_colorpicker' render element for jquery-colorpicker.html.twig.
+	 *
+	 * @param array $element
+	 *   An associative array containing the properties of the element.
+	 *   Properties used: #title, #value, #description, #size, #maxlength,
+	 *   #placeholder, #required, #attributes.
+	 *
+	 * @return array
+	 *   The $element with prepared variables ready for jquery-colorpicker.html.twig.
+	 */
+	public static function preRenderJQueryColorpicker($element)
+	{
+		$element['#attributes']['type'] = 'text';
+		Element::setAttributes($element, array('id', 'name', 'value', 'size', 'maxlength'));
+		static::setAttributes($element, array('form-jquery_colorpicker'));
+
+		return $element;
 	}
 
 	public static function processElement(&$element, FormStateInterface $form_state, &$complete_form)
