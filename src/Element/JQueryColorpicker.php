@@ -97,18 +97,18 @@ class JQueryColorpicker extends FormElement
 	public static function processElement(&$element, FormStateInterface $form_state, &$complete_form)
 	{
 		$element['#id'] = Html::getUniqueID('edit-' . implode('-', $element['#parents']));
+
 		// Decide what background to use to render the element. In order to ensure the background exists, we create an array of
 		// the two possibilities, that we will use to compare the value submitted in the Form API definition.
-
 		$backgrounds = ['select.png', 'select2.png'];
+
 		// Now we check to see if the value in the Form API definition is valid. If it is, we use it, if it's not, we use a default value.
-
 		$background = isset($element['#jquery_colorpicker_background']) && in_array($element['#jquery_colorpicker_background'], $backgrounds) ? $element['#jquery_colorpicker_background'] : 'select.png';
+
 		// Since we know the background, we can then get the URL of it to pass to the javascript function.
-
 		$background_url = file_create_url('libraries/jquery_colorpicker/images/' . $background);
-		// Next we determine what the default value for the form element is. This will also be passed to the javascript function.
 
+		// Next we determine what the default value for the form element is. This will also be passed to the javascript function.
 		$element['#attached']['drupalSettings']['jqueryColorpicker']['elements'][$element['#id']]['background'] = $background_url;
 
 		return $element;

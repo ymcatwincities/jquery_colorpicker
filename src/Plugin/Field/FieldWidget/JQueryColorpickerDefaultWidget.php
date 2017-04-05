@@ -65,6 +65,9 @@ class JQueryColorpickerDefaultWidget extends WidgetBase implements WidgetInterfa
 		);
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public static function defaultSettings()
 	{
 		return [
@@ -72,6 +75,9 @@ class JQueryColorpickerDefaultWidget extends WidgetBase implements WidgetInterfa
 		] + parent::defaultSettings();
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function settingsForm(array $form, FormStateInterface $form_state)
 	{
 		$element['color'] = [
@@ -88,6 +94,9 @@ class JQueryColorpickerDefaultWidget extends WidgetBase implements WidgetInterfa
 		return $element;
 	}
 
+	/**
+	 * Validate the submitted settings
+	 */
 	public function settingsFormValidate($element, FormStateInterface $form_state)
 	{
 		$color = $form_state->getValue($element['#parents']);
@@ -101,6 +110,9 @@ class JQueryColorpickerDefaultWidget extends WidgetBase implements WidgetInterfa
 		}
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function settingsSummary()
 	{
 		$summary = array();
@@ -111,7 +123,7 @@ class JQueryColorpickerDefaultWidget extends WidgetBase implements WidgetInterfa
 	}
 
 	/**
-	 * Build the form element shown when creating the entity
+	 * {@inheritdoc}
 	 */
 	public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state)
 	{

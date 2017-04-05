@@ -25,7 +25,6 @@ class JQueryColorpickerColorDisplayFormatter extends FormatterBase
 	public function settingsSummary()
 	{
 		$summary = [];
-		$settings = $this->getSettings();
 	
 		$summary[] = t('Displays the color in a colored block');
 	

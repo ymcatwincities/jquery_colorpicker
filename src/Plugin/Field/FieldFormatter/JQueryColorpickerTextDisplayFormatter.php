@@ -25,7 +25,6 @@ class JQueryColorpickerTextDisplayFormatter extends FormatterBase
 	public function settingsSummary()
 	{
 		$summary = [];
-		$settings = $this->getSettings();
 	
 		$summary[] = t('Displays textual representation of the color');
 	
