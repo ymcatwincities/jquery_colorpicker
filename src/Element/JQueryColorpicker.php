@@ -57,7 +57,7 @@ class JQueryColorpicker extends FormElement {
 
       $error = $jquery_colorpicker_service->validateColor($element['#value']);
       if ($error) {
-        $form_state->setError($element, $results['error']);
+        $form_state->setError($element, $error);
       }
     }
   }
