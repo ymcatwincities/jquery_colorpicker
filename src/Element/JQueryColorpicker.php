@@ -118,7 +118,7 @@ class JQueryColorpicker extends FormElement {
 
     // Since we know the background, we can then get the URL of it to pass to
     // the javascript function.
-    $background_url = file_create_url('libraries/jquery_colorpicker/images/' . $background);
+    $background_url = file_create_url('vendor://jaypan/jquery-colorpicker/images/' . $background);
 
     // Next we determine what the default value for the form element is. This
     // will also be passed to the javascript function.
