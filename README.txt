@@ -14,9 +14,9 @@ field, and a Form API form element than can be used as follows:
 
 <?php
 $form['element'] = [
-	'#type' => 'jquery_colorpicker',
-	'#title' => t('Color'),
-	'#default_value' => 'FFFFFF',
+  '#type' => 'jquery_colorpicker',
+  '#title' => t('Color'),
+  '#default_value' => 'FFFFFF',
 ];
 ?>
 

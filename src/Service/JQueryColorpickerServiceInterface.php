@@ -35,6 +35,6 @@ interface JQueryColorpickerServiceInterface {
    *   FALSE if there are no errors, or a TranslateabeMarkup object
    *   containing the error message if there are any errors.
    */
-  public function validateColor($color);
+  public function validateHexColor($color);
 
 }

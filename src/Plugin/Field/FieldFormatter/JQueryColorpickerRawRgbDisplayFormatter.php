@@ -13,7 +13,7 @@ use Drupal\Core\Field\FieldItemListInterface;
  *   label = @Translation("Raw RGB"),
  *
  *   field_types = {
- *      "jquery_colorpicker"
+ *      "hexidecimal_color"
  *   }
  * )
  */
@@ -24,9 +24,8 @@ class JQueryColorpickerRawRgbDisplayFormatter extends FormatterBase {
    */
   public function settingsSummary() {
     $summary = [];
-    $settings = $this->getSettings();
 
-    $summary[] = t('Displays a rgb representation of the color, with no HTML wrappers nor the # prefix');
+    $summary['overview'] = $this->t('Displays a rgb representation of the color, with no HTML wrappers.');
 
     return $summary;
   }

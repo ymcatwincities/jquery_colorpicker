@@ -13,7 +13,7 @@ use Drupal\Core\Field\FieldItemListInterface;
  *   label = @Translation("Text"),
  *
  *   field_types = {
- *      "jquery_colorpicker"
+ *      "hexidecimal_color"
  *   }
  * )
  */
@@ -25,7 +25,7 @@ class JQueryColorpickerTextDisplayFormatter extends FormatterBase {
   public function settingsSummary() {
     $summary = [];
 
-    $summary[] = t('Displays textual representation of the color');
+    $summary['overview'] = $this->t('Displays textual representation of the color');
 
     return $summary;
   }

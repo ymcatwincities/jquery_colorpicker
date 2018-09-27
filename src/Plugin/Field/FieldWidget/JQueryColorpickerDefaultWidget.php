@@ -12,13 +12,13 @@ use Drupal\jquery_colorpicker\Service\JQueryColorpickerServiceInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * The default jquery_colorpicker field widget.
+ * The default jQuery Colorpicker field widget.
  *
  * @FieldWidget(
- *   id = "jquery_colorpicker",
+ *   id = "jquery_colorpicker_widget",
  *   label = @Translation("jQuery Colorpicker"),
  *   field_types = {
- *      "jquery_colorpicker"
+ *      "hexidecimal_color"
  *   }
  * )
  */
@@ -71,63 +71,9 @@ class JQueryColorpickerDefaultWidget extends WidgetBase implements WidgetInterfa
   /**
    * {@inheritdoc}
    */
-  public static function defaultSettings() {
-    return [
-      'color' => 'FFFFFF',
-    ] + parent::defaultSettings();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function settingsForm(array $form, FormStateInterface $form_state) {
-    $element['color'] = [
-      '#type' => 'textfield',
-      '#field_prefix' => '#',
-      '#title' => t('Color'),
-      '#default_value' => $this->getSetting('color'),
-      '#required' => TRUE,
-      '#element_validate' => [
-        [$this, 'settingsFormValidate'],
-      ],
-    ];
-
-    return $element;
-  }
-
-  /**
-   * Validate the submitted settings.
-   */
-  public function settingsFormValidate($element, FormStateInterface $form_state) {
-
-    $color = $form_state->getValue($element['#parents']);
-
-    $results = $this->JQueryColorpickerService->validateColor($color);
-
-    $form_state->setValueForElement($element, $results['color']);
-    if (isset($results['error'])) {
-      $form_state->setError($element, $results['error']);
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function settingsSummary() {
-
-    $summary = [];
-
-    $summary[] = t('Default Color: @color', ['@color' => '#' . $this->getSetting('color')]);
-
-    return $summary;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $cardinality = $this->fieldDefinition->getFieldStorageDefinition()->getCardinality();
-    $element['value'] = $element + [
+    $element['color'] = $element + [
       '#type' => 'jquery_colorpicker',
       '#default_value' => isset($items[$delta]->value) ? $items[$delta]->value : 'FFFFFF',
       '#description' => $element['#description'],

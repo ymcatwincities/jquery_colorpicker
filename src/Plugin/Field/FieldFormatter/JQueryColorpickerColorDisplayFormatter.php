@@ -13,7 +13,7 @@ use Drupal\Core\Field\FieldItemListInterface;
  *   label = @Translation("Colored Block"),
  *
  *   field_types = {
- *      "jquery_colorpicker"
+ *      "hexidecimal_color"
  *   }
  * )
  */
@@ -26,7 +26,7 @@ class JQueryColorpickerColorDisplayFormatter extends FormatterBase {
 
     $summary = [];
 
-    $summary[] = t('Displays the color in a colored block');
+    $summary['overview'] = $this->t('Displays the color in a colored block/square/div');
 
     return $summary;
   }
@@ -35,8 +35,8 @@ class JQueryColorpickerColorDisplayFormatter extends FormatterBase {
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
-
     $element = [];
+
     foreach ($items as $delta => $item) {
       $element[$delta] = [
         '#theme' => 'jquery_colorpicker_color_display',

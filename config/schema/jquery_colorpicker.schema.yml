@@ -1,7 +1,15 @@
-field.widget.settings.jquery_colorpicker:
+field.value.color:
   type: mapping
-  label: 'jQuery Colorpicker widget settings'
+  label: 'jQuery Colorpicker Default value'
   mapping:
     color:
-      type: string
+      type: hexidecimal_color
       label: 'Color'
+
+field.formatter.settings.jquery_colorpicker_raw_hex_display:
+  type: mapping
+  label: 'jQuery Colorpicker Raw Hexidecimal display formatter settings'
+  mapping:
+    show_hash:
+      type: boolean
+      label: 'Prefix colors with the hash (#) symbol'

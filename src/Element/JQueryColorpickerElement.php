@@ -12,7 +12,7 @@ use Drupal\Core\Render\Element\FormElement;
  *
  * @FormElement("jquery_colorpicker")
  */
-class JQueryColorpicker extends FormElement {
+class JQueryColorpickerElement extends FormElement {
 
   /**
    * {@inheritdoc}
@@ -55,9 +55,9 @@ class JQueryColorpicker extends FormElement {
         $form_state->setValueForElement($element, $color);
       }
 
-      $error = $jquery_colorpicker_service->validateColor($element['#value']);
-      if ($error) {
-        $form_state->setError($element, $error);
+      $valid_color = $jquery_colorpicker_service->validateHexColor($color);
+      if (!$valid_color) {
+        $form_state->setError($element, t('@value is not a valid hexidecimal color.', ['@value' => $color]));
       }
     }
   }
@@ -67,9 +67,15 @@ class JQueryColorpicker extends FormElement {
    */
   public static function valueCallback(&$element, $input, FormStateInterface $form_state) {
     if ($input !== FALSE && $input !== NULL) {
-      // This should be a string, but allow other scalars since they might be
-      // valid input in programmatic form submissions.
-      return is_scalar($input) ? (string) $input : '';
+      if (is_scalar($input)) {
+        $input = (string) $input;
+        if ($input{0} != '#') {
+          return '#' . strtoupper($input);
+        }
+      }
+      else {
+        return '';
+      }
     }
 
     return NULL;
