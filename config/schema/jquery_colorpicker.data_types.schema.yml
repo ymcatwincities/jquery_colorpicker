@@ -1,3 +1,0 @@
-hexidecimal_color:
-  label: 'Hexidecimal Color String'
-  class: '\Drupal\jquery_colorpicker\Plugin\DataType\HexColorData'

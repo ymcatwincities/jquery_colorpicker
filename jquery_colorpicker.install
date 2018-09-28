@@ -1,0 +1,73 @@
+<?php
+
+/**
+ * @file
+ * Holds install hooks for the jQuery Colorpicker module.
+ */
+
+ /**
+  * Implements hook_update_N().
+  *
+  * Updates module from 8.x-1.x to 8.x-2.x.
+  */
+function jquery_colorpicker_update_8200() {
+  $jquery_colorpicker_fields = jquery_colorpicker_get_hexidecimal_color_fields();
+  foreach ($jquery_colorpicker_fields as $jquery_colorpicker_field) {
+    $field_name = $jquery_colorpicker_field['field']->getName();
+    d($field_name);
+    $fields = \Drupal::entityManager()->getStorage('field_config')->loadByProperties(['field_name' => $field_name]);
+
+    foreach ($fields as $field) {
+      jquery_colorpicker_update_config_v1_v2($field);
+      jquery_colorpicker_update_db_v1_v2($field);
+    }
+  }
+}
+
+/**
+ * Generates an array of jquery colorpicker field data.
+ *
+ * @return array
+ *   An array where the key is the table name in the database, and the value is
+ *   the field name.
+ */
+function jquery_colorpicker_get_jquery_colorpicker_fields() {
+  // Building the $color_fields element is fairly resource intensive, so the
+  // array is cached if any values are found.
+  $color_fields = &drupal_static(__FUNCTION__);
+  if (!is_array($color_fields)) {
+    // Default to an empty array.
+    $color_fields = [];
+    // Get the entity field manager.
+    $entity_field_manager = \Drupal::service('entity_field.manager');
+    // Get the bundle manager.
+    $bundle_manager = \Drupal::service('entity_type.bundle.info');
+    // Get the entity type manager.
+    $entity_type_manager = \Drupal::entityTypeManager();
+    // Get all the entity types on the system and loop through them.
+    $entity_types = $entity_type_manager->getDefinitions();
+    foreach (array_keys($entity_types) as $entity_type) {
+      // Check if the entity type has fields:
+      if ($entity_types[$entity_type]->getBundleEntityType()) {
+        // Get all the bundles for the entity type, and loop throug them.
+        $bundles = $bundle_manager->getBundleInfo($entity_type);
+        foreach (array_keys($bundles) as $bundle) {
+          // Get all the fields on the bundle and loop through them.
+          $fields = $entity_field_manager->getFieldDefinitions($entity_type, $bundle);
+          foreach (array_keys($fields) as $field) {
+            // Check if the field is of type 'jquery_colorpicker'.
+            if ($fields[$field]->getType() == 'jquery_colorpicker') {
+              $color_fields[] = [
+                'field' => $fields[$field],
+                'entity_type' => $entity_type,
+                'bundle' => $bundle,
+              ];
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return $color_fields;
+}

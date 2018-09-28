@@ -6,7 +6,6 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Render\Element\FormElement;
-use Drupal\jquery_colorpicker\Plugin\DataType\HexColorInterface;
 
 /**
  * Provides a jQuery colorpicker form element.
@@ -50,7 +49,7 @@ class JQueryColorpickerElement extends FormElement {
    */
   public static function validateElement(&$element, FormStateInterface $form_state) {
     if (strlen($element['#value'])) {
-      $valid_color = $jquery_colorpicker_service->validateHexColor($color);
+      $valid_color = \Drupal::service('jquery_colorpicker.service')->validateHexColor($color);
       if (!$valid_color) {
         $form_state->setError($element, t('@value is not a valid hexidecimal color.', ['@value' => $color]));
       }
@@ -63,7 +62,7 @@ class JQueryColorpickerElement extends FormElement {
   public static function valueCallback(&$element, $input, FormStateInterface $form_state) {
     if ($input !== FALSE && $input !== NULL && is_scalar($input)) {
       $input = (string) $input;
-      if (preg_match(HexColorInterface::HEXIDECIMAL_COLOR_REGEX, $input)) {
+      if (\Drupal::service('jquery_colorpicker.service')->validateHexColor($input)) {
         return strtoupper($input);
       }
     }

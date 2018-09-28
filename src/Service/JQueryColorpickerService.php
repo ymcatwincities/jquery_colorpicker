@@ -2,7 +2,7 @@
 
 namespace Drupal\jquery_colorpicker\Service;
 
-use Drupal\jquery_colorpicker\Plugin\DataType\HexColorInterface;
+use Drupal\hexidecimal_color\Plugin\DataType\HexColorInterface;
 
 /**
  * The jQuery Colorpicker service.

@@ -9,8 +9,9 @@ CONTENTS OF THIS FILE
 INTRODUCTION
 ------------
 
-The Drupal 8 branch of Jquery Colorpicker offers jQuery Colorpicker Field API
-field, and a Form API form element than can be used as follows:
+The Drupal 8 branch of Jquery Colorpicker offers jQuery Colorpicker widget for
+the (Hexidecimal) Color field, and a Form API form element than can be used as
+follows:
 
 <?php
 $form['element'] = [
@@ -24,10 +25,16 @@ $form['element'] = [
 REQUIREMENTS
 ------------
 
-This module depends upon the jQuery Colorpicker library
-(https://www.eyecon.ro/colorpicker/) and the Drupal Vendor Stream Wrapper module
-(https://www.drupal.org/project/vendor_stream_wrapper). These dependencies are
-managed through Composer when the module is installed using:
+This module depends upon:
+
+- The jQuery Colorpicker library (https://www.eyecon.ro/colorpicker/)
+- The Drupal (Hexidecimal) Color module
+  (https://www.drupal.org/project/hexidecimal_color)
+- The Drupal Vendor Stream Wrapper module
+   (https://www.drupal.org/project/vendor_stream_wrapper).
+
+These dependencies are managed through Composer when the module is installed
+using:
 
 composer require drupal/jquery_colorpicker
 

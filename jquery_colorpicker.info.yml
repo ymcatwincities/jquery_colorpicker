@@ -6,3 +6,4 @@ package: "Field"
 
 dependencies:
   - vendor_stream_wrapper:vendor_stream_wrapper
+  - hexidecimal_color:hexidecimal_color

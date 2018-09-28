@@ -16,21 +16,5 @@ function jquery_colorpicker_theme($existing, $type, $theme, $path) {
       'template' => 'jquery-colorpicker',
       'file' => 'includes/jquery_colorpicker.theme.inc',
     ],
-    'jquery_colorpicker_color_display' => [
-      'variables' => [
-        'delta' => NULL,
-        'item' => NULL,
-        'color' => NULL,
-      ],
-      'template' => 'jquery-colorpicker-color-display',
-    ],
-    'jquery_colorpicker_text_display' => [
-      'variables' => [
-        'delta' => NULL,
-        'item' => NULL,
-        'color' => NULL,
-      ],
-      'template' => 'jquery-colorpicker-text-display',
-    ],
   ];
 }

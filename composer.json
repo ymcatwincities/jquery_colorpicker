@@ -17,7 +17,8 @@
   "license": "GPL-2.0-or-later",
   "minimum-stability": "dev",
   "require": {
+    "jaypan/jquery-colorpicker": "^1.0",
     "drupal/vendor_stream_wrapper": "^1.0",
-    "jaypan/jquery-colorpicker": "^1.0"
+    "drupal/hexidecimal_color": "^1.0"
   }
 }

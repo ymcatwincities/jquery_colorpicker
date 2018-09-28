@@ -2,14 +2,10 @@
 
 namespace Drupal\jquery_colorpicker\Plugin\Field\FieldWidget;
 
-use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Field\WidgetInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\jquery_colorpicker\Service\JQueryColorpickerServiceInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * The default jQuery Colorpicker field widget.
@@ -22,50 +18,18 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   }
  * )
  */
-class JQueryColorpickerDefaultWidget extends WidgetBase implements WidgetInterface, ContainerFactoryPluginInterface {
-
-  /**
-   * The JQuery Colorpicker service.
-   *
-   * @var \Drupal\jquery_colorpicker\Service\JQueryColorpickerServiceInterface
-   */
-  protected $JQueryColorpickerService;
-
-  /**
-   * Constructs a JQueryColorpickerDefaultWidget object.
-   *
-   * @param string $plugin_id
-   *   The plugin ID.
-   * @param mixed $plugin_definition
-   *   The plugin definition.
-   * @param Drupal\Core\Field\FieldDefinitionInterface $field_definition
-   *   The field definition.
-   * @param array $settings
-   *   The field settings.
-   * @param array $third_party_settings
-   *   Third party field settings.
-   * @param Drupal\jquery_colorpicker\Service\JQueryColorpickerServiceInterface $jQueryColorpickerService
-   *   The jQuery Colorpicker service.
-   */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, JQueryColorpickerServiceInterface $jQueryColorpickerService) {
-
-    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
-
-    $this->JQueryColorpickerService = $jQueryColorpickerService;
-  }
+class JQueryColorpickerDefaultWidget extends WidgetBase implements WidgetInterface {
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $plugin_id,
-      $plugin_definition,
-      $configuration['field_definition'],
-      $configuration['settings'],
-      $configuration['third_party_settings'],
-      $container->get('jquery_colorpicker.service')
-    );
+  public function settingsSummary() {
+
+    $summary = [];
+
+    $summary['overview'] = $this->t('A jQuery Colorpicker color widget.');
+
+    return $summary;
   }
 
   /**
