@@ -49,9 +49,9 @@ class JQueryColorpickerElement extends FormElement {
    */
   public static function validateElement(&$element, FormStateInterface $form_state) {
     if (strlen($element['#value'])) {
-      $valid_color = \Drupal::service('jquery_colorpicker.service')->validateHexColor($color);
+      $valid_color = \Drupal::service('colorapi.service')->isValidHexadecimalColorString($element['#value']);
       if (!$valid_color) {
-        $form_state->setError($element, t('@value is not a valid hexidecimal color.', ['@value' => $color]));
+        $form_state->setError($element, t('@value is not a valid hexidecimal color.', ['@value' => $element['#value']]));
       }
     }
   }
@@ -61,8 +61,7 @@ class JQueryColorpickerElement extends FormElement {
    */
   public static function valueCallback(&$element, $input, FormStateInterface $form_state) {
     if ($input !== FALSE && $input !== NULL && is_scalar($input)) {
-      $input = (string) $input;
-      if (\Drupal::service('jquery_colorpicker.service')->validateHexColor($input)) {
+      if (\Drupal::service('colorapi.service')->isValidHexadecimalColorString($input)) {
         return strtoupper($input);
       }
     }

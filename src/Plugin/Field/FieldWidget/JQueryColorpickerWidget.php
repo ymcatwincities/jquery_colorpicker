@@ -3,9 +3,8 @@
 namespace Drupal\jquery_colorpicker\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\Core\Field\WidgetBase;
-use Drupal\Core\Field\WidgetInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\colorapi\Plugin\Field\FieldWidget\ColorapiWidgetBase;
 
 /**
  * The default jQuery Colorpicker field widget.
@@ -14,11 +13,11 @@ use Drupal\Core\Form\FormStateInterface;
  *   id = "jquery_colorpicker_widget",
  *   label = @Translation("jQuery Colorpicker"),
  *   field_types = {
- *      "hexidecimal_color"
+ *      "colorapi_color_field"
  *   }
  * )
  */
-class JQueryColorpickerDefaultWidget extends WidgetBase implements WidgetInterface {
+class JQueryColorpickerWidget extends ColorapiWidgetBase {
 
   /**
    * {@inheritdoc}
@@ -37,9 +36,18 @@ class JQueryColorpickerDefaultWidget extends WidgetBase implements WidgetInterfa
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $cardinality = $this->fieldDefinition->getFieldStorageDefinition()->getCardinality();
-    $element['color'] = $element + [
+
+    $element['name'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Color name'),
+      '#default_value' => $items[$delta]->getColorName(),
+      '#description' => $element['#description'],
+      '#cardinality' => $this->fieldDefinition->getFieldStorageDefinition()->getCardinality(),
+    ];
+
+    $element['color'] = [
       '#type' => 'jquery_colorpicker',
-      '#default_value' => isset($items[$delta]->value) ? $items[$delta]->value : 'FFFFFF',
+      '#default_value' => $items[$delta]->getHexadecimal() ? $items[$delta]->getHexadecimal() : '#FFFFFF',
       '#description' => $element['#description'],
       '#cardinality' => $this->fieldDefinition->getFieldStorageDefinition()->getCardinality(),
     ];
