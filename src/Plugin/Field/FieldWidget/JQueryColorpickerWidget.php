@@ -10,7 +10,7 @@ use Drupal\colorapi\Plugin\Field\FieldWidget\ColorapiWidgetBase;
  * The default jQuery Colorpicker field widget.
  *
  * @FieldWidget(
- *   id = "jquery_colorpicker_widget",
+ *   id = "jquery_colorpicker",
  *   label = @Translation("jQuery Colorpicker"),
  *   field_types = {
  *      "colorapi_color_field"
@@ -35,15 +35,7 @@ class JQueryColorpickerWidget extends ColorapiWidgetBase {
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-    $cardinality = $this->fieldDefinition->getFieldStorageDefinition()->getCardinality();
-
-    $element['name'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Color name'),
-      '#default_value' => $items[$delta]->getColorName(),
-      '#description' => $element['#description'],
-      '#cardinality' => $this->fieldDefinition->getFieldStorageDefinition()->getCardinality(),
-    ];
+    $element = parent::formElement($items, $delta, $element, $form, $form_state);
 
     $element['color'] = [
       '#type' => 'jquery_colorpicker',
