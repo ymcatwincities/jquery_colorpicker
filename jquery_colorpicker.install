@@ -153,10 +153,9 @@ function jquery_colorpicker_update_8200() {
           if ($view_displays = $entity_manager->getStorage('entity_view_display')->loadByProperties($properties)) {
             foreach ($view_displays as $view_display) {
               if ($component = $view_display->getComponent($field_name)) {
-                $component['type'] = str_replace('jquery_colorpicker', 'colorpicker_color', $component['type']);
+                $component['type'] = str_replace('jquery_colorpicker', 'colorapi', $component['type']);
 
                 $view_display->setComponent($field_name, [
-                  'type' => $type,
                   'settings' => [],
                 ] + $component);
 
