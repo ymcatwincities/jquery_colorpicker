@@ -29,9 +29,8 @@ abstract class JqueryColorpickerDisplayFormatterBase extends FormatterBase {
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
-    $element = [];
 
-    $element['error'] = [
+    $element[0]['color'] = [
       '#prefix' => '<p class="error">',
       '#suffix' => '</p>',
       '#markup' => $this->t('Error: Please run update.php to fix this error.'),
