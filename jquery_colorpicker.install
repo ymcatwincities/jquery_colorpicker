@@ -5,8 +5,6 @@
  * Holds install hooks for the jQuery Colorpicker module.
  */
 
-use Drupal\Core\Field\FieldConfigInterface;
-use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\colorapi\Plugin\Field\FieldType\ColorItem;
@@ -114,17 +112,19 @@ function jquery_colorpicker_update_8200() {
       }
 
       if ($database->schema()->tableExists($revision_table_name)) {
-        db_insert($revision_table_name)
-          ->fields([
-            'bundle' => $result->bundle,
-            'deleted' => $result->deleted,
-            'entity_id' => $result->entity_id,
-            'revision_id' => $result->revision_id,
-            'langcode' => $result->langcode,
-            'delta' => $result->delta,
-            $field_name . '_color' => '#' . strtoupper($result->{$field_name . '_value'}),
-          ])
-          ->execute();
+        foreach ($revision_table_data as $result) {
+          db_insert($revision_table_name)
+            ->fields([
+              'bundle' => $result->bundle,
+              'deleted' => $result->deleted,
+              'entity_id' => $result->entity_id,
+              'revision_id' => $result->revision_id,
+              'langcode' => $result->langcode,
+              'delta' => $result->delta,
+              $field_name . '_color' => '#' . strtoupper($result->{$field_name . '_value'}),
+            ])
+            ->execute();
+        }
       }
 
       // Update the field settings.
