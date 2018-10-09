@@ -38,6 +38,10 @@ function jquery_colorpicker_requirements($phase) {
  * structure. This function handles the configuration changes.
  */
 function jquery_colorpicker_update_8200() {
+  // If the Color API Color Field is not enabled, an error is thrown, so it is
+  // enabled here.
+  \Drupal::configFactory()->getEditable('colorapi.settings')->set('enable_color_field', TRUE)->save();
+  drupal_flush_all_caches();
   $entity_manager = \Drupal::entityManager();
   $database = \Drupal::database();
 
