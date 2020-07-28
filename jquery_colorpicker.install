@@ -42,7 +42,9 @@ function jquery_colorpicker_update_8200() {
   // enabled here.
   \Drupal::configFactory()->getEditable('colorapi.settings')->set('enable_color_field', TRUE)->save();
   drupal_flush_all_caches();
-  $entity_manager = \Drupal::entityManager();
+  // TODO: Drupal Rector Notice: Please delete the following comment after you've made any necessary changes.
+  // We are assuming that we want to use the `entity_type.manager` service since no method was called here directly. Please confirm this is the case. See https://www.drupal.org/node/2549139 for more information.
+  $entity_manager = \Drupal::service('entity_type.manager');
   $database = \Drupal::database();
 
   if ($field_storage_configs = $entity_manager->getStorage('field_storage_config')->loadByProperties(['type' => 'jquery_colorpicker'])) {
@@ -102,7 +104,9 @@ function jquery_colorpicker_update_8200() {
       $new_field_storage->save();
 
       foreach ($entity_table_data as $result) {
-        db_insert($entity_table_name)
+        // TODO: Drupal Rector Notice: Please delete the following comment after you've made any necessary changes.
+        // You will need to use `\Drupal\core\Database\Database::getConnection()` if you do not yet have access to the container here.
+        \Drupal::database()->insert($entity_table_name)
           ->fields([
             'bundle' => $result->bundle,
             'deleted' => $result->deleted,
@@ -117,7 +121,9 @@ function jquery_colorpicker_update_8200() {
 
       if ($database->schema()->tableExists($revision_table_name)) {
         foreach ($revision_table_data as $result) {
-          db_insert($revision_table_name)
+          // TODO: Drupal Rector Notice: Please delete the following comment after you've made any necessary changes.
+          // You will need to use `\Drupal\core\Database\Database::getConnection()` if you do not yet have access to the container here.
+          \Drupal::database()->insert($revision_table_name)
             ->fields([
               'bundle' => $result->bundle,
               'deleted' => $result->deleted,
