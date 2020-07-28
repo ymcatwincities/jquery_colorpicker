@@ -1,5 +1,5 @@
 {
-  "name": "drupal/jquery_colorpicker",
+  "name": "ymcatwincities/jquery_colorpicker",
   "description": "A Drupal integration with the jQuery Colorpicker (https://www.eyecon.ro/colorpicker) module",
   "type": "drupal-module",
   "homepage": "https://drupal.org/project/jquery_colorpicker",
